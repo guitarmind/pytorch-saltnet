@@ -1,6 +1,11 @@
 #!/usr/bin/env python
-"""Train UNet for the Kaggle TGS salt identification challenge: https://www.kaggle.com/c/tgs-salt-identification-challenge"""
-__author__ = 'Erdene-Ochir Tuguldur, Yuan Xu'
+"""
+
+Transfer learning for ship segmentation task.
+Forked from 'Train UNet for the Kaggle TGS salt identification challenge: https://www.kaggle.com/c/tgs-salt-identification-challenge'
+
+"""
+__author__ = 'Mark Peng'
 
 import time
 import argparse
@@ -72,15 +77,17 @@ if args.resize:
 device = choose_device(args.device)
 use_gpu = device.type == 'cuda'
 
-orig_img_size = 101
-img_size = 128
+orig_img_size = 768
+img_size = 384
 padding = compute_padding(orig_img_size, orig_img_size, img_size)
 
 geometric_transform_prob = 0.5 * 0.25
-geometric_transform = Compose([RandomApply([CropAndRescale(max_scale=0.2)], p=geometric_transform_prob),
+geometric_transform = Compose([
+                               # RandomApply([CropAndRescale(max_scale=0.2)], p=geometric_transform_prob),
                                RandomApply([HorizontalShear(max_scale=0.07)], p=geometric_transform_prob),
                                RandomApply([Rotation(max_angle=15)], p=geometric_transform_prob),
-                               RandomApply([ElasticDeformation(max_distort=0.15)], p=geometric_transform_prob)])
+                               # RandomApply([ElasticDeformation(max_distort=0.15)], p=geometric_transform_prob)
+                               ])
 brightness_transform_prob = 0.5 * 0.33
 brightness_transform = Compose([RandomApply([BrightnessShift(max_value=0.1)], p=brightness_transform_prob),
                                 RandomApply([BrightnessScaling(max_value=0.08)], p=brightness_transform_prob),

@@ -18,8 +18,8 @@ from transforms import *
 
 from utils import rlenc, rlenc_np, FasterRle, gzip_save
 
-orig_img_size = 101
-img_size = 128
+orig_img_size = 768
+img_size = 384
 padding = compute_padding(orig_img_size, orig_img_size, img_size)
 d_y0, d_y1, d_x0, d_x1 = padding
 y0, y1, x0, x1 = d_y0, d_y0 + orig_img_size, d_x0, d_x0 + orig_img_size
